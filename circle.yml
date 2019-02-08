@@ -1,0 +1,23 @@
+machine:
+  node:
+    version: 6.10.2
+  environment:
+    PORT: 8080
+  services:
+    - docker
+dependencies:
+  pre:
+    - sudo apt-get install jq
+  override:
+    - npm install
+test:
+  override:
+    - npm test
+  post:
+    - npm run lint
+deployment:
+  production:
+    branch: master
+    commands:
+       - ./docker/build_image.sh push
+       - ./deployment/deploy.sh
